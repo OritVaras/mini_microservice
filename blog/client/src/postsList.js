@@ -1,37 +1,42 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CommentCreate from './commentCreate';
 import CommentList from './commentList';
 
-
 const PostsList = () => {
-    const [posts, setPosts] = useState({});
+  const [posts, setPosts] = useState({});
 
-    const fetchPosts = async() => {
-        const res = await axios.get('http://posts.com/posts');
-        setPosts(res.data);
-    }
+  const fetchPosts = async () => {
+    const res = await axios.get('http://posts.com/posts');
+    setPosts(res.data);
+  };
 
-    useEffect(() => {
-        fetchPosts();
-    },[]);
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
-    const renderedPosts = Object.values(posts)// return an array of values
-     .map(post => {
-        return <div
-        className='card'
-        style={{width: '30%', marginBottom:'20px'}}
-        key={post.id}
+  const renderedPosts = Object.values(posts) // return an array of values
+    .map((post) => {
+      return (
+        <div
+          className="card"
+          style={{ width: '30%', marginBottom: '20px' }}
+          key={post.id}
         >
-        <div className='card-body'>
+          <div className="card-body">
             <h3>{post.title}</h3>
             <CommentList comments={post.comments} />
             <CommentCreate postId={post.id} />
+          </div>
         </div>
-        </div>
-     })
-  
-   return  <div className='d-flex flex-row flex-wrap justify-content-between'>{renderedPosts}</div>;
+      );
+    });
+
+  return (
+    <div className="d-flex flex-row flex-wrap justify-content-between">
+      {renderedPosts}
+    </div>
+  );
 };
 
 export default PostsList;
